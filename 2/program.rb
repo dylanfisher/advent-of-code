@@ -1,21 +1,30 @@
 #!/usr/bin/ruby
 
-times_increased = 0
-last_depth = nil
-lines = File.readlines('input.txt')
+# --- Day 2: Dive! ---
+# https://adventofcode.com/2021/day/2
 
-lines.each_with_index do |line, i|
-  line_group = lines[i..i+2]
+# forward X increases the horizontal position by X units.
+# down X increases the depth by X units.
+# up X decreases the depth by X units.
 
-  next if line_group.length < 3
+x = 0
+y = 0
 
-  current_depth = line_group.collect(&:to_i).sum
+File.readlines('input.txt').each do |line|
+  commands = line.split(' ')
+  direction = commands[0]
+  units = commands[1].to_i
 
-  if last_depth && (current_depth > last_depth)
-    times_increased += 1
+  case direction
+  when 'forward'
+    x += units
+  when 'up'
+    y -= units
+  when 'down'
+    y += units
   end
-
-  last_depth = current_depth
 end
 
-puts times_increased
+puts "x = #{x}"
+puts "y = #{y}"
+puts "total: #{x * y}"
