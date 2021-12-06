@@ -59,11 +59,12 @@ class Timeline
   end
 end
 
-lines = File.readlines('sample.txt')
+lines = File.readlines('input.txt')
 fish_ages = lines.first.split(',').collect(&:to_i)
 starting_fish = fish_ages.collect { |a| Fish.new(a) }
 
 timeline = Timeline.new(80, starting_fish)
 timeline.simulate!
 
+# Part 1 total fish: 375482
 puts "Total fish: #{timeline.fishes.length}"
