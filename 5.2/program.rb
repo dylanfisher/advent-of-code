@@ -49,9 +49,9 @@ class Grid
 
   def create_diagram
     rows = []
-    (min_y..max_y).each do
+    (0..max_y).each do
       column = []
-      (min_x..max_x).each { |v| column << { v => 0 } }
+      (0..max_x).each { |v| column << { v => 0 } }
       rows << column
     end
     rows
@@ -73,26 +73,17 @@ class Grid
         end
 
         x_unit = c[:x1] > c[:x2] ? -1 : 1
-        # y_unit = c[:y1] > c[:y2] ? -1 : 1
-        # Starting coordinates
-        # sc_y = y_unit == 1 ? [c[:x2], c[:y1]] : [c[:x1], c[:y2]]
-        # sc_x = x_unit == 1 ? [c[:x2], c[:y1]] : [c[:x1], c[:y2]]
-
         range_y = [c[:y1], c[:y2]].sort
-        # range_x = [c[:x1], c[:x2]].sort
         range_y_length = (range_y[0]..range_y[1]).to_a.length
         range_y_length.times do |i|
-          # binding.pry if index == 5
           row = diagram[c[:y1] + i]
           x_iterator = (c[:x1] + (i * x_unit))
-          # binding.pry if x_iterator == 0
           column = row[x_iterator]
-          # binding.pry if column.nil?
           column[x_iterator] = column[x_iterator] += 1
         end
       else
         coordinate_y_range(c).each do |y_index|
-          row = diagram[y_index - y_index_offset]
+          row = diagram[y_index]
           coordinate_x_range(c).each do |x_index|
             h = row.find { |h| h.keys[0] == x_index }
             h[x_index] = h[x_index] += 1
@@ -121,7 +112,7 @@ class Grid
   end
 end
 
-lines = File.readlines('sample.txt')
+lines = File.readlines('input.txt')
 points = lines.collect do |line|
   parts = line.chomp.split(' -> ').collect { |x| x.split(',').collect(&:to_i) }
   {
@@ -133,8 +124,7 @@ points = lines.collect do |line|
 end
 
 grid = Grid.new(points)
-# puts grid.diagram.inspect
-# binding.pry
 
 # Overlapping points in part 1: 7674
+# Overlapping points in part 2: 20898
 puts "Overlapping points: #{grid.overlapping_points.length}"
