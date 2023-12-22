@@ -14,10 +14,6 @@ BLUE_COUNT = 14
 valid = []
 
 File.readlines('input2.txt').each do |line|
-  id = line.match(/Game (\d*):/)[1].to_i
-
-  line.sub!(/Game \d*: /, '')
-
   r = line.scan(/(\d*) red/).flatten.collect(&:to_i).max.to_i
   g = line.scan(/(\d*) green/).flatten.collect(&:to_i).max.to_i
   b = line.scan(/(\d*) blue/).flatten.collect(&:to_i).max.to_i
