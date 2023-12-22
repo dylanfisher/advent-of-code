@@ -2,34 +2,27 @@
 
 require 'pry'
 
-# --- Day 1: Trebuchet?! ---
-# https://adventofcode.com/2023/day/1
+# --- Day 2: Cube Conundrum ---
+# https://adventofcode.com/2023/day/2
 
-num_sets = []
-dict = {
-  'one' => 1,
-  'two' => 2,
-  'three' => 3,
-  'four' => 4,
-  'five' => 5,
-  'six' => 6,
-  'seven' => 7,
-  'eight' => 8,
-  'nine' => 9
-}
+RED_COUNT = 12
+GREEN_COUNT = 13
+BLUE_COUNT = 14
+
+# Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+
+valid = []
 
 File.readlines('input2.txt').each do |line|
-  digits = line.scan(/(?=(#{dict.keys.join('|')}|\d))/)
-  num_arr = []
-  first = digits.first.first
-  last = digits.last.first
-  num_arr << (first.to_i == 0 ? dict[first] : first.to_i)
-  num_arr << (last.to_i == 0 ? dict[last] : last.to_i)
-  num_sets << num_arr.join.to_i
+  id = line.match(/Game (\d*):/)[1].to_i
+
+  line.sub!(/Game \d*: /, '')
+
+  r = line.scan(/(\d*) red/).flatten.collect(&:to_i).max.to_i
+  g = line.scan(/(\d*) green/).flatten.collect(&:to_i).max.to_i
+  b = line.scan(/(\d*) blue/).flatten.collect(&:to_i).max.to_i
+
+  valid << [r, g, b].reduce(:*)
 end
 
-num_sets.reject!(&:nil?)
-
-total = num_sets.sum
-
-puts total
+puts valid.sum
